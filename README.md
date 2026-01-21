@@ -30,29 +30,16 @@ To set up the project, follow these steps:
    git clone https://github.com/tspecht93/HANNA.git
    cd HANNA
    ```
-2. **Create the conda environment:**
+2. **Core packages required:**
 
-   Use the provided `.yml` file to create the conda environment.
-
-   For Windows:
-
-   ```bash
-   conda env create -f HANNA.yml
-   ```
-
-   For Linux:
-
-      ```bash
-   conda env create -f HANNA_Linux.yml
-   ```
-
-   
-
-4. **Activate the environment:**
-
-   ```bash
-   conda activate HANNA
-   ```
+   - PyTorch
+   - NumPy & Pandas
+   - Scikit-learn
+   - Matplotlib
+   - RDKit
+   - Transformers
+   - JupyterLab
+   - SciPy
 
 ## Usage
 
@@ -66,8 +53,6 @@ You can use the `HANNA.ipynb` notebook, which provides a demonstration of how to
 - `Plots.py`: Function for creating and exporting the plot. Raw values will be saved as csv.
 - `Utils.py`: Utility functions used throughout the project.
 - `HANNA.ipynb`: Jupyter notebook demonstrating the usage of HANNA.
-- `HANNA.yml`: Conda environment configuration file for Windows users.
-- `HANNA_Linux.yml`: Conda environment configuration file for Linux users.
 - `README.md`: Project documentation.
 - `License.txt`: Contains license information for the HANNA.
 
