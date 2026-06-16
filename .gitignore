@@ -6,3 +6,7 @@
 # Exception: do not ignore this specific PNG file
 !TOC_figure_with_white_background.png
 !TOC.png
+models
+data
+reports
+Results
