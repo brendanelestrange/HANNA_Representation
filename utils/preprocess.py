@@ -2,7 +2,7 @@ import torch
 import pickle
 import numpy as np
 from sklearn.model_selection import train_test_split
-
+import argparse
 
 def _default_device() -> str:
     if torch.cuda.is_available():
@@ -12,12 +12,16 @@ def _default_device() -> str:
     return 'cpu'
 
 
+parser = argparse.ArgumentParser()
+parser.add_argument("-s", "--seed", required=False, default=20, type=int)
+args = parser.parse_args()
+
 def prepare_gamma_data(df_gamma, mode='split', val_size=0.2, device=None, verbose=False):
     if device is None:
         device = _default_device()
 
     if mode == 'split':
-        train_ids, val_ids = train_test_split(df_gamma['system_ID'].unique(), test_size=val_size, random_state=10)
+        train_ids, val_ids = train_test_split(df_gamma['system_ID'].unique(), test_size=val_size, random_state=args.seed)
         datasets = {
             'train': df_gamma[df_gamma['system_ID'].isin(train_ids)],
             'val': df_gamma[df_gamma['system_ID'].isin(val_ids)]

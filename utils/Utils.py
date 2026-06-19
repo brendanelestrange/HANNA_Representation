@@ -2,10 +2,6 @@ import torch
 from transformers import AutoModel, AutoTokenizer
 import numpy as np
 from rdkit import Chem
-from tokenizers import Tokenizer
-from tokenizers.pre_tokenizers import Split
-from tokenizers import Regex
-from tokenizers.models import WordLevel
 import os
       
 def predict(embedding_matrix, scaler, model, device): # Function to predict ln_gamma values
@@ -88,26 +84,14 @@ def initiliaze_ChemBERTA(model_name="DeepChem/ChemBERTa-77M-MTR", device=None):
     
     # Define ChemBERTa model and move it to the specified device
     ChemBERTA = AutoModel.from_pretrained(pretrained_model_name_or_path=model_name).to(device)
-    
-    # Load custom tokenizer using the saved vocab.json
-    custom_tokenizer = Tokenizer(
-        WordLevel.from_file(
-            'ChemBERTa/vocab.json',  # Path to your custom vocabulary file
-            unk_token='[UNK]'
-        )
-    )
+    ChemBERTA.save_pretrained('ChemBERTa')
+    tokenizer = AutoTokenizer.from_pretrained(model_name).to(device)
 
-    # Set the pre-tokenizer to split SMILES characters (including handling Br, Cl, etc.)
-    pre_tokenizer = Split(
-        pattern=Regex(r"\[(.*?)\]|Br|Cl|."),
-        behavior='isolated'
-    )
-    custom_tokenizer.pre_tokenizer = pre_tokenizer
-    return ChemBERTA, custom_tokenizer
+    return ChemBERTA, tokenizer
 
-def get_smiles_embedding(smiles, custom_tokenizer, ChemBERTA, device, max_length=512):
+def get_smiles_embedding(smiles, tokenizer, ChemBERTA, device, max_length=1024):
     # Tokenize the SMILES using your custom tokenizer
-    custom_encoded = custom_tokenizer.encode(smiles)
+    custom_encoded = tokenizer.encode(smiles)
 
     # Add [CLS] and [SEP] tokens
     CLS_token_id = 12  # Assuming 12 is the token ID for [CLS]
